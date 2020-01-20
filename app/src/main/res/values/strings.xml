@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">ClubManager</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="presence">Prisustvo</string>
+    <string name="memberships">Članarine</string>
+    <string name="reports">Izveštaji</string>
+    <string name="edit">Izmeni</string>
+    <string name="delete">Obriši</string>
+</resources>

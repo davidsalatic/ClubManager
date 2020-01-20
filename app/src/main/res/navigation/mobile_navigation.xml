@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_presence">
+
+    <fragment
+        android:id="@+id/navigation_presence"
+        android:name="com.example.clubmanager.ui.presence.PresenceFragment"
+        android:label="@string/presence"
+        tools:layout="@layout/fragment_presence" />
+
+    <fragment
+        android:id="@+id/navigation_memberships"
+        android:name="com.example.clubmanager.ui.memberships.MembershipFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_membership" />
+
+    <fragment
+        android:id="@+id/navigation_reports"
+        android:name="com.example.clubmanager.ui.reports.ReportsFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_reports" />
+</navigation>

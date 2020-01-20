@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_presence"
+        android:icon="@drawable/ic_presence32"
+        android:title="@string/presence" />
+
+    <item
+        android:id="@+id/navigation_memberships"
+        android:icon="@drawable/ic_memberships32a"
+        android:title="@string/memberships" />
+
+    <item
+        android:id="@+id/navigation_reports"
+        android:icon="@drawable/ic_reports24"
+        android:title="@string/reports" />
+
+</menu>
