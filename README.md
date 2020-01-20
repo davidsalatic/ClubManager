@@ -1,2 +1,2 @@
 # ClubManager
- A mobile application built for easier, paper-document free management of a sports club.
+ A mobile application for easy, paper-document free management of a sports club.
