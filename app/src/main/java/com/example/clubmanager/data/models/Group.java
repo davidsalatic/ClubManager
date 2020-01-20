@@ -21,7 +21,7 @@ public class Group extends Model{
     {
         this.name=name;
         this.id=generateUniqueId();
-        setDatabasePath(Database.GROUPS_PATH);
+        setParentDatabasePath( Database.GROUPS_PATH);
     }
 
     private String generateUniqueId() {

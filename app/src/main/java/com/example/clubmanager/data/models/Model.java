@@ -2,16 +2,16 @@ package com.example.clubmanager.data.models;
 
 public abstract class Model {
 
-    private String databasePath;
+    private String parentDatabasePath;
 
-    public  String getDatabasePath()
+    public  String getParentDatabasePath()
     {
-        return databasePath;
+        return parentDatabasePath;
     }
 
-    public void setDatabasePath(String databasePath)
+    protected void setParentDatabasePath(String parentDatabasePath)
     {
-        this.databasePath=databasePath;
+        this.parentDatabasePath=parentDatabasePath;
     }
 
     public abstract String getId();
