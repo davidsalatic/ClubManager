@@ -1,5 +1,7 @@
 package com.example.clubmanager.data.models;
 
+import com.example.clubmanager.Database;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -19,7 +21,7 @@ public class Group extends Model{
     {
         this.name=name;
         this.id=generateUniqueId();
-        setDatabasePath("groups");
+        setDatabasePath(Database.GROUPS_PATH);
     }
 
     private String generateUniqueId() {

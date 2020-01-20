@@ -2,6 +2,7 @@ package com.example.clubmanager.data.repositories;
 
 import androidx.annotation.NonNull;
 
+import com.example.clubmanager.Database;
 import com.example.clubmanager.data.models.Group;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,7 +19,7 @@ public class GroupRepository extends ModelRepository {
 
         final ArrayList<Group> listOfGroups= new ArrayList<>();
 
-        DatabaseReference databaseReference = getDatabaseReference("groups");
+        DatabaseReference databaseReference = getDatabaseReference(Database.GROUPS_PATH);
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
