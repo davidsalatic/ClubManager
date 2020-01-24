@@ -46,6 +46,12 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupHolder>
         notifyDataSetChanged();
     }
 
+    public void addGroup(Group group)
+    {
+        this.groups.add(group);
+        notifyDataSetChanged();
+    }
+
     class GroupHolder extends RecyclerView.ViewHolder{
         private Button btnGroup;
 

@@ -4,54 +4,87 @@ import androidx.annotation.NonNull;
 
 import com.example.clubmanager.Database;
 import com.example.clubmanager.data.models.Group;
+import com.example.clubmanager.observer.GroupsObserver;
+import com.example.clubmanager.observer.GroupsSubject;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupRepository extends ModelRepository {
+//singleton class
+public class GroupRepository extends ModelRepository implements GroupsSubject {
 
-    public ArrayList<Group> getAllGroups() {
+    private static final GroupRepository groupRepository = new GroupRepository();
+
+    private GroupsObserver observer;
+
+    @Override
+    public void setObserver(GroupsObserver groupsObserver) {
+        this.observer=groupsObserver;
+
+        //Every time that a Subject subscribes, notify him with the groups from database
+        getGroupsFromDatabaseAndNotifyObserver();
+    }
+
+    private void getGroupsFromDatabaseAndNotifyObserver() {
 
         final ArrayList<Group> listOfGroups= new ArrayList<>();
 
-        DatabaseReference databaseReference = getDatabaseReference(Database.GROUPS_PATH);
+        DatabaseReference databaseReference = Database.getDatabaseReference(Database.GROUPS_PATH);
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot databaseData) {
 
-                populateListWithDataFromDatabase(listOfGroups,databaseData);
+                listOfGroups.clear();
 
-                notifyObservers(listOfGroups);
+                List<String> keys = new ArrayList<>();
+
+                for (DataSnapshot groupSnapshot : databaseData.getChildren()) {
+                    keys.add(groupSnapshot.getKey());
+                    listOfGroups.add(groupSnapshot.getValue(Group.class));
+                }
+
+                notifyObserverWithAllGroups(listOfGroups);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                showToastMessageToObservers(""+databaseError.getCode()+":"+databaseError.getMessage());
+                showToastMessageToObserver(""+databaseError.getCode()+":"+databaseError.getMessage());
             }
         });
-
-        return listOfGroups;
     }
 
-    private void populateListWithDataFromDatabase(ArrayList<Group> listOfGroups, DataSnapshot databaseData) {
-
-        listOfGroups.clear();
-
-        List<String> keys = new ArrayList<>();
-
-        for (DataSnapshot groupSnapshot : databaseData.getChildren()) {
-            keys.add(groupSnapshot.getKey());
-            listOfGroups.add(groupSnapshot.getValue(Group.class));
-        }
+    @Override
+    public void notifyObserverWithAllGroups(ArrayList<Group> groups) {
+        observer.updateWithAllGroups(groups);
     }
 
-    private DatabaseReference getDatabaseReference(String databasePath) {
-        return FirebaseDatabase.getInstance().getReference(databasePath);
+    @Override
+    public void showToastMessageToObserver(String message) {
+        observer.showToastMessage(message);
     }
+
+    public void insert(Group group) {
+        super.insert(group);
+        notifyObserverWithInsertedGroup(group);
+    }
+
+    @Override
+    public void notifyObserverWithInsertedGroup(Group group) {
+        observer.updateWithInsertedGroup(group);
+    }
+
+    private GroupRepository() {
+    }
+
+    public static GroupRepository getInstance() {
+        return groupRepository;
+    }
+
+
+
 }

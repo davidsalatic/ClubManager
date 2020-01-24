@@ -2,8 +2,6 @@ package com.example.clubmanager;
 
 import android.os.Bundle;
 
-import com.example.clubmanager.data.models.Group;
-import com.example.clubmanager.data.repositories.ModelRepository;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,14 +25,6 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
-
-//      TEST DATA
-//        ModelRepository modelRepository = new ModelRepository();
-//        modelRepository.insert(new Group("1.Grupa"));
-//        modelRepository.insert(new Group("2.Grupa"));
-//        modelRepository.insert(new Group("3.Grupa"));
-//        modelRepository.insert(new Group("4.Grupa"));
-//        modelRepository.insert(new Group("Rekreativna grupa"));
     }
 
 }

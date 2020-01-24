@@ -2,22 +2,21 @@ package com.example.clubmanager.ui.presence;
 
 import androidx.lifecycle.ViewModel;
 
-import com.example.clubmanager.data.repositories.GroupRepository;
-import com.example.clubmanager.data.repositories.ModelRepository;
 import com.example.clubmanager.data.models.Group;
-
-import java.util.ArrayList;
+import com.example.clubmanager.data.repositories.GroupRepository;
 
 public class PresenceViewModel extends ViewModel {
 
-    private ArrayList<Group> groups;
-    private GroupRepository repository;
+    private GroupRepository groupRepository;
 
     public PresenceViewModel(PresenceFragment fragment) {
 
-        repository =new GroupRepository();
-        repository.addObserver(fragment);
-        groups= repository.getAllGroups();
+        groupRepository=GroupRepository.getInstance();
 
+        groupRepository.setObserver(fragment);
+    }
+
+    public void insert(Group group) {
+        groupRepository.insert(group);
     }
 }

@@ -4,7 +4,8 @@ import com.example.clubmanager.data.models.Group;
 
 import java.util.ArrayList;
 
-public interface Observer {
-    void update(ArrayList<Group>groups);
+public interface GroupsObserver {
+    void updateWithAllGroups(ArrayList<Group>groups);
+    void updateWithInsertedGroup(Group group);
     void showToastMessage(String message);
 }
