@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -110,19 +111,27 @@ public class PresenceFragment extends Fragment{
 
         if(isSuccessfulAdd(requestCode,resultCode))
         {
-            //TODO may produce null exception
-            String groupName = data.getStringExtra(AddGroupActivity.EXTRA_NAME);
+            try {
+                String groupName = data.getStringExtra(AddGroupActivity.EXTRA_NAME);
+                presenceViewModel.insert(new Group(groupName));
+            }catch(NullPointerException exc)
+            {
+                showLongToastMessage("Greška: Neuspešno dodavanje grupe");
+            }
 
-            presenceViewModel.insert(new Group(groupName));
         }
         else if(isSuccessfulEdit(requestCode,resultCode))
         {
-            //TODO may produce null exception
-            String newGroupName = data.getStringExtra(EditGroupActivity.EXTRA_NEW_GROUP_NAME);
-            String idOfEditedGroup = data.getStringExtra(EditGroupActivity.EXTRA_GROUP_ID);
+            try {
+                String newGroupName = data.getStringExtra(EditGroupActivity.EXTRA_NEW_GROUP_NAME);
+                String idOfEditedGroup = data.getStringExtra(EditGroupActivity.EXTRA_GROUP_ID);
+                Group newGroup = new Group(idOfEditedGroup,newGroupName);
+                presenceViewModel.updateGroup(newGroup);
+            }catch (NullPointerException exc)
+            {
+                showLongToastMessage("Greška: Neuspešna izmena grupe");
+            }
 
-            Group newGroup = new Group(idOfEditedGroup,newGroupName);
-            presenceViewModel.updateGroup(newGroup);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -166,6 +175,11 @@ public class PresenceFragment extends Fragment{
 
             }
         });
+    }
+
+    private void showLongToastMessage(String message)
+    {
+        Toast.makeText(getContext(),message,Toast.LENGTH_LONG).show();
     }
 
 }
