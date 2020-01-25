@@ -73,6 +73,15 @@ public class GroupRepository extends ModelRepository implements GroupsSubject {
         notifyObserverWithInsertedGroup(group);
     }
 
+    public void updateGroupName(String groupId, String newGroupName) {
+        Database.getDatabaseReference(Database.GROUPS_PATH).child(groupId).child("name").setValue(newGroupName);
+        notifyObserverWithUpdatedGroupName(groupId,newGroupName);
+    }
+
+    public void notifyObserverWithUpdatedGroupName(String groupId, String newGroupName) {
+        observer.updateWithUpdatedGroupName(groupId,newGroupName);
+    }
+
     @Override
     public void notifyObserverWithInsertedGroup(Group group) {
         observer.updateWithInsertedGroup(group);

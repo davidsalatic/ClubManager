@@ -41,7 +41,6 @@ public class AddGroupActivity extends AppCompatActivity {
         if(item.getItemId()==R.id.save_item)
         {
             saveItemClicked();
-            finish();
         }
         else if(item.getItemId()==R.id.close)
             finish();
@@ -49,7 +48,7 @@ public class AddGroupActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void saveItemClicked() {
+    protected void saveItemClicked() {
         EditText editTextGroupName= findViewById(R.id.etGroupName);
 
         String groupName = extractTrimmedStringFromEditText(editTextGroupName);
@@ -61,21 +60,22 @@ public class AddGroupActivity extends AppCompatActivity {
         else
         {
             saveGroup(groupName);
+            finish();
         }
     }
 
-    private String extractTrimmedStringFromEditText(EditText editText) {
+    protected String extractTrimmedStringFromEditText(EditText editText) {
         String text=editText.getText().toString();
         text=text.trim();
         return text;
     }
 
-    private void showToastMessage(String message)
+    protected void showToastMessage(String message)
     {
         Toast.makeText(this,message,Toast.LENGTH_LONG).show();
     }
 
-    private void saveGroup(String groupName) {
+    protected void saveGroup(String groupName) {
         Intent transferData = new Intent();
         transferData.putExtra(EXTRA_NAME,groupName);
         setResult(RESULT_OK,transferData);

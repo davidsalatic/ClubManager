@@ -19,4 +19,9 @@ public class PresenceViewModel extends ViewModel {
     public void insert(Group group) {
         groupRepository.insert(group);
     }
+
+    public void updateGroupName(String groupId,String groupName)
+    {
+        groupRepository.updateGroupName(groupId,groupName);
+    }
 }
