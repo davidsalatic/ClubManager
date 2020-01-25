@@ -8,6 +8,5 @@ public interface GroupsObserver {
     void updateWithAllGroups(ArrayList<Group>groups);
     void updateWithInsertedGroup(Group group);
     void showToastMessage(String message);
-
-    void updateWithUpdatedGroupName(String groupId, String newGroupName);
+    void updateWithNewGroupName(String groupId, String newGroupName);
 }

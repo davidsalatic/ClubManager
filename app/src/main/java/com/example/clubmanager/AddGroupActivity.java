@@ -55,7 +55,7 @@ public class AddGroupActivity extends AppCompatActivity {
 
         if(groupName.isEmpty())
         {
-            showToastMessage("Polje ne može ostati prazno!");
+            showFieldEmptyToastMessage();
         }
         else
         {
@@ -70,9 +70,9 @@ public class AddGroupActivity extends AppCompatActivity {
         return text;
     }
 
-    protected void showToastMessage(String message)
+    protected void showFieldEmptyToastMessage()
     {
-        Toast.makeText(this,message,Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"Polje ne može ostati prazno!",Toast.LENGTH_LONG).show();
     }
 
     protected void saveGroup(String groupName) {

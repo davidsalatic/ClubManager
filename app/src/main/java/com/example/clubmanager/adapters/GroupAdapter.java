@@ -16,17 +16,11 @@ import java.util.ArrayList;
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupHolder> {
 
     private ArrayList<Group> groups;
-    private OnItemClickListener listener;
+    private OnGroupItemClickListener listener;
 
-    public void setOnItemClickListener(OnItemClickListener listener)
+    public void setOnGroupItemClickListener(OnGroupItemClickListener listener)
     {
         this.listener=listener;
-    }
-
-
-
-    public interface  OnItemClickListener {
-        void onEditGroupClick(Group group);
     }
 
     public GroupAdapter()
@@ -45,11 +39,6 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupHolder>
     public void onBindViewHolder(@NonNull GroupHolder holder, int position) {
         Group currentGroup = groups.get(position);
         holder.btnGroup.setText(currentGroup.getName());
-    }
-
-    @Override
-    public int getItemCount() {
-        return groups.size();
     }
 
     public void setGroups(ArrayList<Group>groups)
@@ -72,6 +61,12 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupHolder>
         notifyDataSetChanged();
     }
 
+    @Override
+    public int getItemCount() {
+        return groups.size();
+    }
+
+    //Holder class
     class GroupHolder extends RecyclerView.ViewHolder{
         private Button btnGroup;
         private Button btnEditGroup;
@@ -97,8 +92,5 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupHolder>
                 }
             });
         }
-
-
     }
-
 }

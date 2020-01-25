@@ -2,11 +2,9 @@ package com.example.clubmanager.ui.presence;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +17,7 @@ import com.example.clubmanager.AddGroupActivity;
 import com.example.clubmanager.EditGroupActivity;
 import com.example.clubmanager.R;
 import com.example.clubmanager.adapters.GroupAdapter;
+import com.example.clubmanager.adapters.OnGroupItemClickListener;
 import com.example.clubmanager.data.models.Group;
 import com.example.clubmanager.observer.GroupsObserver;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -26,16 +25,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
+import static com.example.clubmanager.constants.Requests.ADD_GROUP_REQUEST;
+import static com.example.clubmanager.constants.Requests.EDIT_GROUP_REQUEST;
 
 public class PresenceFragment extends Fragment implements GroupsObserver {
-
-    public static final int ADD_GROUP_REQUEST = 1;
-    public static final int EDIT_GROUP_REQUEST=0;
 
     public static final String EXTRA_GROUP_NAME = "com.example.clubmanager.EXTRA_GROUP_NAME";
     public static final String EXTRA_GROUP_ID = "com.example.clubmanager.EXTRA_GROUP_ID";
 
-    public static final String TAG="david";
     private PresenceViewModel presenceViewModel;
     private RecyclerView rvGroups;
     private GroupAdapter groupAdapter;
@@ -59,7 +56,7 @@ public class PresenceFragment extends Fragment implements GroupsObserver {
 
     private void configureGroupAdapterAndSetClickListener() {
         groupAdapter = new GroupAdapter();
-        groupAdapter.setOnItemClickListener(new GroupAdapter.OnItemClickListener() {
+        groupAdapter.setOnGroupItemClickListener(new OnGroupItemClickListener() {
             @Override
             public void onEditGroupClick(Group group) {
                 startEditGroupActivity(group);
@@ -71,7 +68,7 @@ public class PresenceFragment extends Fragment implements GroupsObserver {
         Intent intent = new Intent(getContext(), EditGroupActivity.class);
         intent.putExtra(EXTRA_GROUP_ID,group.getId());
         intent.putExtra(EXTRA_GROUP_NAME,group.getName());
-        startActivityForResult(intent,EDIT_GROUP_REQUEST);
+        startActivityForResult(intent, EDIT_GROUP_REQUEST);
     }
 
 
@@ -87,7 +84,7 @@ public class PresenceFragment extends Fragment implements GroupsObserver {
 
     private void startAddGroupActivity() {
         Intent intent = new Intent(getContext(), AddGroupActivity.class);
-        startActivityForResult(intent,ADD_GROUP_REQUEST);
+        startActivityForResult(intent, ADD_GROUP_REQUEST);
     }
 
     private void configureRecyclerView() {
@@ -113,9 +110,7 @@ public class PresenceFragment extends Fragment implements GroupsObserver {
             String idOfEditedGroup = data.getStringExtra(EditGroupActivity.EXTRA_GROUP_ID);
 
             presenceViewModel.updateGroupName(idOfEditedGroup,newGroupName);
-
         }
-
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -145,7 +140,7 @@ public class PresenceFragment extends Fragment implements GroupsObserver {
     }
 
     @Override
-    public void updateWithUpdatedGroupName(String groupId, String newGroupName) {
+    public void updateWithNewGroupName(String groupId, String newGroupName) {
         groupAdapter.changeGroupName(groupId,newGroupName);
     }
 

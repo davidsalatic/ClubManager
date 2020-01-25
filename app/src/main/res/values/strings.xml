@@ -8,4 +8,5 @@
     <string name="edit">Izmeni</string>
     <string name="delete">Obriši</string>
     <string name="title_activity_add_group">AddGroupActivity</string>
+    <string name="title_activity_edit_group">EditGroupActivity</string>
 </resources>

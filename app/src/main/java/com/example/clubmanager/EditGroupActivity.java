@@ -30,16 +30,20 @@ public class EditGroupActivity extends AddGroupActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Bundle extras = getIntent().getExtras();
-
-        groupName= extras.getString(PresenceFragment.EXTRA_GROUP_NAME);
-        groupId = extras.getString(PresenceFragment.EXTRA_GROUP_ID);
+        getExtras();
 
         editTextGroupName = findViewById(R.id.etGroupName);
         editTextGroupName.setText(groupName);
 
 
         setTitle("Izmena grupe '"+groupName+"'");
+    }
+
+    private void getExtras() {
+        Bundle extras = getIntent().getExtras();
+
+        groupName= extras.getString(PresenceFragment.EXTRA_GROUP_NAME);
+        groupId = extras.getString(PresenceFragment.EXTRA_GROUP_ID);
     }
 
     @Override
@@ -59,7 +63,7 @@ public class EditGroupActivity extends AddGroupActivity {
 
         if(groupName.isEmpty())
         {
-            showToastMessage("Polje ne može ostati prazno!");
+            super.showFieldEmptyToastMessage();
         }
         else
         {

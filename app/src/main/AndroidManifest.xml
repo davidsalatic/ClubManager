@@ -9,11 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity
+            android:name=".EditGroupActivity"
+            android:label="@string/title_activity_edit_group"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".AddGroupActivity"
             android:label="@string/title_activity_add_group"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
