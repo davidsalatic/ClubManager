@@ -24,6 +24,14 @@ public class Group extends Model{
         setParentDatabasePath( Database.GROUPS_PATH);
     }
 
+    public Group(String id,String name)
+    {
+        this.id=id;
+        this.name=name;
+        setParentDatabasePath(Database.GROUPS_PATH);
+    }
+
+
     private String generateUniqueId() {
         return UUID.randomUUID().toString();
     }

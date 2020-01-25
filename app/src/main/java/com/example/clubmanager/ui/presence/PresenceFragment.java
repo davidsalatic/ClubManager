@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,21 +13,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.clubmanager.AddGroupActivity;
+import com.example.clubmanager.Database;
 import com.example.clubmanager.EditGroupActivity;
 import com.example.clubmanager.R;
 import com.example.clubmanager.adapters.GroupAdapter;
 import com.example.clubmanager.adapters.OnGroupItemClickListener;
 import com.example.clubmanager.data.models.Group;
-import com.example.clubmanager.observer.GroupsObserver;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.ArrayList;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 
 import static android.app.Activity.RESULT_OK;
 import static com.example.clubmanager.constants.Requests.ADD_GROUP_REQUEST;
 import static com.example.clubmanager.constants.Requests.EDIT_GROUP_REQUEST;
 
-public class PresenceFragment extends Fragment implements GroupsObserver {
+public class PresenceFragment extends Fragment{
 
     public static final String EXTRA_GROUP_NAME = "com.example.clubmanager.EXTRA_GROUP_NAME";
     public static final String EXTRA_GROUP_ID = "com.example.clubmanager.EXTRA_GROUP_ID";
@@ -51,8 +52,12 @@ public class PresenceFragment extends Fragment implements GroupsObserver {
 
         configureRecyclerView();
 
+        DatabaseReference groupsReference = Database.getDatabaseReference(Database.GROUPS_PATH);
+        listenToDatabaseChanges(groupsReference);
+
         return root;
     }
+
 
     private void configureGroupAdapterAndSetClickListener() {
         groupAdapter = new GroupAdapter();
@@ -61,12 +66,17 @@ public class PresenceFragment extends Fragment implements GroupsObserver {
             public void onEditGroupClick(Group group) {
                 startEditGroupActivity(group);
             }
+
+            @Override
+            public void onDeleteGroupClick(Group group) {
+                presenceViewModel.remove(group);
+            }
         });
     }
 
     private void startEditGroupActivity(Group group) {
         Intent intent = new Intent(getContext(), EditGroupActivity.class);
-        intent.putExtra(EXTRA_GROUP_ID,group.getId());
+        intent.putExtra(EXTRA_GROUP_ID, group.getId());
         intent.putExtra(EXTRA_GROUP_NAME,group.getName());
         startActivityForResult(intent, EDIT_GROUP_REQUEST);
     }
@@ -100,54 +110,62 @@ public class PresenceFragment extends Fragment implements GroupsObserver {
 
         if(isSuccessfulAdd(requestCode,resultCode))
         {
+            //TODO may produce null exception
             String groupName = data.getStringExtra(AddGroupActivity.EXTRA_NAME);
 
             presenceViewModel.insert(new Group(groupName));
         }
         else if(isSuccessfulEdit(requestCode,resultCode))
         {
+            //TODO may produce null exception
             String newGroupName = data.getStringExtra(EditGroupActivity.EXTRA_NEW_GROUP_NAME);
             String idOfEditedGroup = data.getStringExtra(EditGroupActivity.EXTRA_GROUP_ID);
 
-            presenceViewModel.updateGroupName(idOfEditedGroup,newGroupName);
+            Group newGroup = new Group(idOfEditedGroup,newGroupName);
+            presenceViewModel.updateGroup(newGroup);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private boolean isSuccessfulEdit(int requestCode, int resultCode) {
-        if(resultCode==RESULT_OK && requestCode==EDIT_GROUP_REQUEST)
-            return true;
-
-        return false;
-    }
-
-    public boolean isSuccessfulAdd(int requestCode ,int resultCode)
+    private boolean isSuccessfulAdd(int requestCode, int resultCode)
     {
-        if(resultCode==RESULT_OK && requestCode==ADD_GROUP_REQUEST)
-            return true;
-
-        return false;
+        return resultCode == RESULT_OK && requestCode == ADD_GROUP_REQUEST;
     }
 
-    @Override
-    public void updateWithAllGroups(ArrayList<Group>groups) {
-            groupAdapter.setGroups(groups);
+    private boolean isSuccessfulEdit(int requestCode, int resultCode) {
+        return resultCode == RESULT_OK && requestCode == EDIT_GROUP_REQUEST;
     }
 
-    @Override
-    public void updateWithInsertedGroup(Group group) {
-        groupAdapter.addGroup(group);
-    }
+    private void listenToDatabaseChanges(DatabaseReference groupsReference) {
+        groupsReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Group newGroup = dataSnapshot.getValue(Group.class);
+                groupAdapter.addGroup(newGroup);
+            }
 
-    @Override
-    public void updateWithNewGroupName(String groupId, String newGroupName) {
-        groupAdapter.changeGroupName(groupId,newGroupName);
-    }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Group newGroup = dataSnapshot.getValue(Group.class);
+                groupAdapter.editGroup(newGroup);
+            }
 
-    @Override
-    public void showToastMessage(String message) {
-        Toast.makeText(getContext(),message,Toast.LENGTH_LONG);
-    }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                Group removedGroup = dataSnapshot.getValue(Group.class);
+                groupAdapter.removeGroup(removedGroup);
+            }
 
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
 }

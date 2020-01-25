@@ -3,25 +3,28 @@ package com.example.clubmanager.ui.presence;
 import androidx.lifecycle.ViewModel;
 
 import com.example.clubmanager.data.models.Group;
-import com.example.clubmanager.data.repositories.GroupRepository;
+import com.example.clubmanager.data.ModelRepository;
 
-public class PresenceViewModel extends ViewModel {
+class PresenceViewModel extends ViewModel {
 
-    private GroupRepository groupRepository;
+    private ModelRepository modelRepository;
 
-    public PresenceViewModel(PresenceFragment fragment) {
+    PresenceViewModel(PresenceFragment fragment) {
 
-        groupRepository=GroupRepository.getInstance();
-
-        groupRepository.setObserver(fragment);
+        modelRepository=ModelRepository.getInstance();
     }
 
-    public void insert(Group group) {
-        groupRepository.insert(group);
+    void insert(Group group) {
+        modelRepository.insert(group);
     }
 
-    public void updateGroupName(String groupId,String groupName)
+    void updateGroup(Group newGroup)
     {
-        groupRepository.updateGroupName(groupId,groupName);
+        modelRepository.update(newGroup);
+    }
+
+    void remove(Group group)
+    {
+        modelRepository.remove(group);
     }
 }

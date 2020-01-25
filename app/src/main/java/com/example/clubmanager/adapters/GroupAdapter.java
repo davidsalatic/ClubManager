@@ -18,20 +18,18 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupHolder>
     private ArrayList<Group> groups;
     private OnGroupItemClickListener listener;
 
-    public void setOnGroupItemClickListener(OnGroupItemClickListener listener)
-    {
-        this.listener=listener;
+    public void setOnGroupItemClickListener(OnGroupItemClickListener listener) {
+        this.listener = listener;
     }
 
-    public GroupAdapter()
-    {
-        groups=new ArrayList<>();
+    public GroupAdapter() {
+        groups = new ArrayList<>();
     }
 
     @NonNull
     @Override
     public GroupHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.group_item,parent,false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.group_item, parent, false);
         return new GroupHolder(itemView);
     }
 
@@ -41,22 +39,25 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupHolder>
         holder.btnGroup.setText(currentGroup.getName());
     }
 
-    public void setGroups(ArrayList<Group>groups)
-    {
-        this.groups=groups;
-        notifyDataSetChanged();
-    }
-
-    public void addGroup(Group group)
-    {
+    public void addGroup(Group group) {
         this.groups.add(group);
         notifyDataSetChanged();
     }
 
-    public void changeGroupName(String groupId, String newGroupName) {
-        for(Group group:groups)
-            if(group.getId().equals(groupId))
-                group.setName(newGroupName);
+    public void editGroup(Group newGroup) {
+        for (Group oldGroup : groups)
+            if (oldGroup.getId().equals(newGroup.getId())) {
+                oldGroup.setName(newGroup.getName());
+            }
+
+        notifyDataSetChanged();
+    }
+
+    public void removeGroup(Group removedGroup) {
+        for(int i=0;i<groups.size();i++) {
+            if (groups.get(i).getId().equals(removedGroup.getId()))
+                groups.remove(groups.get(i));
+        }
 
         notifyDataSetChanged();
     }
@@ -66,29 +67,34 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupHolder>
         return groups.size();
     }
 
+
     //Holder class
-    class GroupHolder extends RecyclerView.ViewHolder{
+    class GroupHolder extends RecyclerView.ViewHolder {
         private Button btnGroup;
         private Button btnEditGroup;
+        private Button btnDeleteGroup;
 
-        public GroupHolder(@NonNull View itemView) {
+        GroupHolder(@NonNull View itemView) {
             super(itemView);
-            btnGroup=itemView.findViewById(R.id.btnGroup);
-            btnEditGroup=itemView.findViewById(R.id.btnEditGroup);
-
+            btnGroup = itemView.findViewById(R.id.btnGroup);
+            btnEditGroup = itemView.findViewById(R.id.btnEditGroup);
+            btnDeleteGroup = itemView.findViewById(R.id.btnDeleteGroup);
 
             btnEditGroup.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(listener!=null)
-                    {
-                        int position=getAdapterPosition();
-                        if(position!=RecyclerView.NO_POSITION)
-                        {
-                            Group group = groups.get(position);
-                            listener.onEditGroupClick(group);
-                        }
-                    }
+                    int position = getAdapterPosition();
+                    Group group = groups.get(position);
+                    listener.onEditGroupClick(group);
+                }
+            });
+
+            btnDeleteGroup.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    Group group = groups.get(position);
+                    listener.onDeleteGroupClick(group);
                 }
             });
         }
