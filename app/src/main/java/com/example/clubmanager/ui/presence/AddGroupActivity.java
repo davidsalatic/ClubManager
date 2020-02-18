@@ -1,11 +1,11 @@
 package com.example.clubmanager.ui.presence;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.clubmanager.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.clubmanager.data.ModelRepository;
+import com.example.clubmanager.data.models.Group;
+import com.example.clubmanager.data.models.Model;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,13 +13,12 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 public class AddGroupActivity extends AppCompatActivity {
 
-    public static final String EXTRA_NAME = "com.example.clubmanager.EXTRA_NAME";
+    private ModelRepository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +26,8 @@ public class AddGroupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_group);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        repository = ModelRepository.getInstance();
 
         setTitle("Nova grupa");
     }
@@ -60,7 +61,8 @@ public class AddGroupActivity extends AppCompatActivity {
         }
         else
         {
-            saveGroup(groupName);
+            Group group = new Group(groupName);
+            saveModel(group);
             finish();
         }
     }
@@ -76,9 +78,7 @@ public class AddGroupActivity extends AppCompatActivity {
         Toast.makeText(this,"Sva polja moraju biti popunjena!",Toast.LENGTH_LONG).show();
     }
 
-    protected void saveGroup(String groupName) {
-        Intent transferData = new Intent();
-        transferData.putExtra(EXTRA_NAME,groupName);
-        setResult(RESULT_OK,transferData);
+    protected void saveModel(Model model) {
+        repository.insert(model);
     }
 }

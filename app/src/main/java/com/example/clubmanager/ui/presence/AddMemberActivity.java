@@ -3,6 +3,7 @@ package com.example.clubmanager.ui.presence;
 import android.os.Bundle;
 
 import com.example.clubmanager.data.ModelRepository;
+import com.example.clubmanager.data.models.Group;
 import com.example.clubmanager.data.models.Member;
 import com.example.clubmanager.data.models.Model;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -21,17 +22,28 @@ import com.example.clubmanager.R;
 
 public class AddMemberActivity extends AddGroupActivity {
 
+    private String groupId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_member);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        getExtras();
+
+        setTitle("Novi član");
+    }
+
+    private void getExtras() {
+        Bundle extras = getIntent().getExtras();
+
+        groupId = extras.getString(PresenceFragment.EXTRA_GROUP_ID);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.add_item_menu,menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -55,14 +67,9 @@ public class AddMemberActivity extends AddGroupActivity {
         else
         {
             Member member = new Member(name,surname);
-            saveMember(member);
-//            finish();
+            member.setGroupId(groupId);
+            super.saveModel(member);
+            finish();
         }
-    }
-
-    private void saveMember(Member member)
-    {
-        ModelRepository repository = ModelRepository.getInstance();
-        repository.insert(member);
     }
 }

@@ -1,6 +1,5 @@
 package com.example.clubmanager.ui.presence;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,15 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.clubmanager.R;
-import com.example.clubmanager.ui.presence.AddGroupActivity;
-import com.example.clubmanager.ui.presence.PresenceFragment;
-
-
+import com.example.clubmanager.data.models.Group;
 
 public class EditGroupActivity extends AddGroupActivity {
-
-    public static final String EXTRA_NEW_GROUP_NAME = "com.example.clubmanager.EXTRA_NEW_GROUP_NAME";
-    public static final String EXTRA_GROUP_ID = "com.example.clubmanager.EXTRA_GROUP_ID";
 
     private String groupName;
     private String groupId;
@@ -69,16 +62,9 @@ public class EditGroupActivity extends AddGroupActivity {
         }
         else
         {
-            saveGroup(groupName);
+            Group group = new Group(groupId,groupName);
+            super.saveModel(group);
             finish();
         }
-    }
-
-    @Override
-    protected void saveGroup(String groupName) {
-        Intent transferData = new Intent();
-        transferData.putExtra(EXTRA_NEW_GROUP_NAME,groupName);
-        transferData.putExtra(EXTRA_GROUP_ID,groupId);
-        setResult(RESULT_OK,transferData);
     }
 }

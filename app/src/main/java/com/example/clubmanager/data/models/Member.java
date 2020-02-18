@@ -12,6 +12,7 @@ public class Member extends Model{
     private String name;
     private String surname;
     private Group group;
+    private String groupId;
     private ArrayList<TrainingSessionPresence> trainingSessionPresences;
 
     private Member()
@@ -37,6 +38,14 @@ public class Member extends Model{
     public void setGroup(Group group)
     {
         this.group=group;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
     @Override

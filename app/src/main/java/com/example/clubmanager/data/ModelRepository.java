@@ -18,12 +18,6 @@ public  class ModelRepository {
         Database.getDatabaseReference(databasePathOfModel).removeValue();
     }
 
-    public void update(Model newModel)
-    {
-        //Firebase overwrites model with the updated one automatically, since we are inserting new values on the same node
-        this.insert(newModel);
-    }
-
     private String generateDatabasePathOfModel(Model model) {
         return model.getParentDatabasePath() + "/" + model.getId();
     }

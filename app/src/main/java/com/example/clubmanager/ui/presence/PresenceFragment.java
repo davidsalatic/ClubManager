@@ -74,7 +74,7 @@ public class PresenceFragment extends Fragment{
 
             @Override
             public void onGroupClick(Group group) {
-                startTrainingActivity(group);
+                startGroupActivity(group);
             }
         });
     }
@@ -83,7 +83,7 @@ public class PresenceFragment extends Fragment{
         Intent intent = new Intent(getContext(), EditGroupActivity.class);
         intent.putExtra(EXTRA_GROUP_ID, group.getId());
         intent.putExtra(EXTRA_GROUP_NAME,group.getName());
-        startActivityForResult(intent, EDIT_GROUP_REQUEST);
+        startActivity(intent);
     }
 
 
@@ -99,16 +99,15 @@ public class PresenceFragment extends Fragment{
 
     private void startAddGroupActivity() {
         Intent intent = new Intent(getContext(), AddGroupActivity.class);
-        startActivityForResult(intent, ADD_GROUP_REQUEST);
-    }
-
-
-    private void startTrainingActivity(Group group) {
-        Intent intent = new Intent(getContext(), GroupActivity.class);
-        intent.putExtra(EXTRA_GROUP_ID,group.getId());
         startActivity(intent);
     }
 
+    private void startGroupActivity(Group group) {
+        Intent intent = new Intent(getContext(), GroupActivity.class);
+        intent.putExtra(EXTRA_GROUP_ID,group.getId());
+        intent.putExtra(EXTRA_GROUP_NAME,group.getName());
+        startActivity(intent);
+    }
 
     private void configureRecyclerView() {
         rvGroups= root.findViewById(R.id.rvGroups);
@@ -116,45 +115,6 @@ public class PresenceFragment extends Fragment{
         rvGroups.setHasFixedSize(true);
 
         rvGroups.setAdapter(groupAdapter);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
-        if(isSuccessfulAdd(requestCode,resultCode))
-        {
-            try {
-                String groupName = data.getStringExtra(AddGroupActivity.EXTRA_NAME);
-                repository.insert(new Group(groupName));
-            }catch(NullPointerException exc)
-            {
-                showLongToastMessage("Greška: Neuspešno dodavanje grupe");
-            }
-
-        }
-        else if(isSuccessfulEdit(requestCode,resultCode))
-        {
-            try {
-                String newGroupName = data.getStringExtra(EditGroupActivity.EXTRA_NEW_GROUP_NAME);
-                String idOfEditedGroup = data.getStringExtra(EditGroupActivity.EXTRA_GROUP_ID);
-                Group newGroup = new Group(idOfEditedGroup,newGroupName);
-                repository.update(newGroup);
-            }catch (NullPointerException exc)
-            {
-                showLongToastMessage("Greška: Neuspešna izmena grupe");
-            }
-
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    private boolean isSuccessfulAdd(int requestCode, int resultCode)
-    {
-        return resultCode == RESULT_OK && requestCode == ADD_GROUP_REQUEST;
-    }
-
-    private boolean isSuccessfulEdit(int requestCode, int resultCode) {
-        return resultCode == RESULT_OK && requestCode == EDIT_GROUP_REQUEST;
     }
 
     private void listenToDatabaseChanges(DatabaseReference groupsReference) {
@@ -188,10 +148,4 @@ public class PresenceFragment extends Fragment{
             }
         });
     }
-
-    private void showLongToastMessage(String message)
-    {
-        Toast.makeText(getContext(),message,Toast.LENGTH_LONG).show();
-    }
-
 }
