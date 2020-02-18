@@ -1,8 +1,9 @@
-package com.example.clubmanager;
+package com.example.clubmanager.ui.presence;
 
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.clubmanager.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -72,7 +73,7 @@ public class AddGroupActivity extends AppCompatActivity {
 
     protected void showFieldEmptyToastMessage()
     {
-        Toast.makeText(this,"Polje ne može ostati prazno!",Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"Sva polja moraju biti popunjena!",Toast.LENGTH_LONG).show();
     }
 
     protected void saveGroup(String groupName) {

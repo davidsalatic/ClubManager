@@ -13,12 +13,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.clubmanager.AddGroupActivity;
 import com.example.clubmanager.Database;
-import com.example.clubmanager.EditGroupActivity;
 import com.example.clubmanager.R;
 import com.example.clubmanager.adapters.GroupAdapter;
 import com.example.clubmanager.adapters.OnGroupItemClickListener;
+import com.example.clubmanager.data.ModelRepository;
 import com.example.clubmanager.data.models.Group;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.ChildEventListener;
@@ -35,17 +34,17 @@ public class PresenceFragment extends Fragment{
     public static final String EXTRA_GROUP_NAME = "com.example.clubmanager.EXTRA_GROUP_NAME";
     public static final String EXTRA_GROUP_ID = "com.example.clubmanager.EXTRA_GROUP_ID";
 
-    private PresenceViewModel presenceViewModel;
     private RecyclerView rvGroups;
     private GroupAdapter groupAdapter;
     private View root;
     private FloatingActionButton fabAddGroup;
+    private  ModelRepository repository;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_presence, container, false);
 
-        presenceViewModel= new PresenceViewModel(this);
+        repository = ModelRepository.getInstance();
 
         configureGroupAdapterAndSetClickListener();
 
@@ -70,7 +69,12 @@ public class PresenceFragment extends Fragment{
 
             @Override
             public void onDeleteGroupClick(Group group) {
-                presenceViewModel.remove(group);
+                repository.remove(group);
+            }
+
+            @Override
+            public void onGroupClick(Group group) {
+                startTrainingActivity(group);
             }
         });
     }
@@ -98,6 +102,14 @@ public class PresenceFragment extends Fragment{
         startActivityForResult(intent, ADD_GROUP_REQUEST);
     }
 
+
+    private void startTrainingActivity(Group group) {
+        Intent intent = new Intent(getContext(), GroupActivity.class);
+        intent.putExtra(EXTRA_GROUP_ID,group.getId());
+        startActivity(intent);
+    }
+
+
     private void configureRecyclerView() {
         rvGroups= root.findViewById(R.id.rvGroups);
         rvGroups.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -113,7 +125,7 @@ public class PresenceFragment extends Fragment{
         {
             try {
                 String groupName = data.getStringExtra(AddGroupActivity.EXTRA_NAME);
-                presenceViewModel.insert(new Group(groupName));
+                repository.insert(new Group(groupName));
             }catch(NullPointerException exc)
             {
                 showLongToastMessage("Greška: Neuspešno dodavanje grupe");
@@ -126,7 +138,7 @@ public class PresenceFragment extends Fragment{
                 String newGroupName = data.getStringExtra(EditGroupActivity.EXTRA_NEW_GROUP_NAME);
                 String idOfEditedGroup = data.getStringExtra(EditGroupActivity.EXTRA_GROUP_ID);
                 Group newGroup = new Group(idOfEditedGroup,newGroupName);
-                presenceViewModel.updateGroup(newGroup);
+                repository.update(newGroup);
             }catch (NullPointerException exc)
             {
                 showLongToastMessage("Greška: Neuspešna izmena grupe");

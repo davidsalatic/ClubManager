@@ -5,20 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".ui.presence.AddGroupActivity"
-    tools:showIn="@layout/activity_add_group">
+    tools:context=".ui.presence.AddMemberActivity"
+    tools:showIn="@layout/activity_add_member">
 
     <EditText
-        android:id="@+id/etGroupName"
+        android:id="@+id/etMemberName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="88dp"
         android:ems="10"
-        android:hint="Ime grupe"
+        android:hint="Ime"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:padding="16dp"
-        android:maxLines="1"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/etMemberSurname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="29dp"
+        android:layout_marginEnd="1dp"
+        android:ems="10"
+        android:hint="Prezime"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/etMemberName"
+        app:layout_constraintTop_toBottomOf="@+id/etMemberName" />
 </androidx.constraintlayout.widget.ConstraintLayout>

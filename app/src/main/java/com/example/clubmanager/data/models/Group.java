@@ -2,13 +2,9 @@ package com.example.clubmanager.data.models;
 
 import com.example.clubmanager.Database;
 
-import java.util.List;
-import java.util.UUID;
-
 public class Group extends Model{
 
     private String name;
-    private List<Member> members;
     private String id;
 
     private Group()
@@ -20,30 +16,15 @@ public class Group extends Model{
     public Group(String name)
     {
         this.name=name;
-        this.id=generateUniqueId();
-        setParentDatabasePath( Database.GROUPS_PATH);
+        this.id=super.generateUniqueId();
+        super.setParentDatabasePath(Database.GROUPS_PATH);
     }
 
     public Group(String id,String name)
     {
         this.id=id;
         this.name=name;
-        setParentDatabasePath(Database.GROUPS_PATH);
-    }
-
-
-    private String generateUniqueId() {
-        return UUID.randomUUID().toString();
-    }
-
-    public void addMember(Member member)
-    {
-        this.members.add(member);
-    }
-
-    public void removeMember(Member member)
-    {
-        this.members.remove(member);
+        super.setParentDatabasePath(Database.GROUPS_PATH);
     }
 
     public String getName() {

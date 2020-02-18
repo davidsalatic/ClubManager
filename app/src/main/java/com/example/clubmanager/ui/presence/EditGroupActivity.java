@@ -1,4 +1,4 @@
-package com.example.clubmanager;
+package com.example.clubmanager.ui.presence;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.clubmanager.R;
+import com.example.clubmanager.ui.presence.AddGroupActivity;
 import com.example.clubmanager.ui.presence.PresenceFragment;
 
 

@@ -6,6 +6,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class Database {
 
     public static final String GROUPS_PATH = "groups";
+    public static final String MEMBERS_PATH = "members";
 
     public static FirebaseDatabase getInstance()
     {

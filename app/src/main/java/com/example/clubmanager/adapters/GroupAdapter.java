@@ -97,6 +97,15 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupHolder>
                     listener.onDeleteGroupClick(group);
                 }
             });
+
+            btnGroup.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    Group group = groups.get(position);
+                    listener.onGroupClick(group);
+                }
+            });
         }
     }
 }

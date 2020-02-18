@@ -10,11 +10,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".EditGroupActivity"
-            android:label="@string/title_activity_edit_group"
+            android:name=".ui.presence.AddMemberActivity"
+            android:label="@string/title_activity_add_member"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".AddGroupActivity"
+            android:name=".ui.presence.GroupActivity"
+            android:label="@string/title_activity_training"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.presence.EditGroupActivity"
+            android:label="@string/title_activity_edit_group"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.presence.AddGroupActivity"
             android:label="@string/title_activity_add_group"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
