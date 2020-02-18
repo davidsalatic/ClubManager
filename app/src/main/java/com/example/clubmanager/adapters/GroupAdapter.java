@@ -76,9 +76,9 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupHolder>
 
         GroupHolder(@NonNull View itemView) {
             super(itemView);
-            btnGroup = itemView.findViewById(R.id.btnGroup);
-            btnEditGroup = itemView.findViewById(R.id.btnEditGroup);
-            btnDeleteGroup = itemView.findViewById(R.id.btnDeleteGroup);
+            btnGroup = itemView.findViewById(R.id.btnMember);
+            btnEditGroup = itemView.findViewById(R.id.btnEditMember);
+            btnDeleteGroup = itemView.findViewById(R.id.btnDeleteMember);
 
             btnEditGroup.setOnClickListener(new View.OnClickListener() {
                 @Override

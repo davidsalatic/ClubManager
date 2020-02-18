@@ -38,7 +38,7 @@ public class PresenceFragment extends Fragment{
     private GroupAdapter groupAdapter;
     private View root;
     private FloatingActionButton fabAddGroup;
-    private  ModelRepository repository;
+    private ModelRepository repository;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
